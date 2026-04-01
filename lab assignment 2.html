@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Aysnc Wheather App</title>
+    <style>
+        body{
+font-family:Arial;
+background:#1d2b64;
+color:white;
+text-align:center;
+}
+
+.container{
+display:flex;
+justify-content:center;
+gap:20px;
+margin-top:30px;
+}
+
+.searchBox,.weatherBox,.history{
+background:white;
+color:black;
+padding:15px;
+border-radius:8px;
+}
+
+input{
+padding:8px;
+}
+
+button{
+padding:8px 12px;
+background:orange;
+border:none;
+color:white;
+cursor:pointer;
+}
+
+.console{
+background:#0f1a3a;
+padding:10px;
+margin:20px auto;
+width:500px;
+}
+
+ul{
+list-style:none;
+padding:0;
+}
+
+li{
+display:inline-block;
+background:orange;
+color:white;
+padding:5px 10px;
+margin:5px;
+cursor:pointer;
+border-radius:5px;
+}
+    </style>
+</head>
+
+<body>
+
+    <h1>Async Wheather Tracker</h1>
+    <div>
+        <div class="left-container">
+            <div id="search-main-container">
+
+                <h3>Search City Wheather</h3>
+                <form action="">
+                    <label for="city"> Search City:</label>
+                    <input placeholder="Enter City Name" type="text" name="city" id="city">
+                    <button type="submit">Submit</button>
+                </form>
+            </div>
+
+            <div id="history-main-container">
+
+                <h3>Search History</h3>
+
+                <div id="Search-history">
+                    <button>Delhi</button>
+                    <button>Mumbai</button>
+                </div>
+
+            </div>
+        </div>
+
+        <div class="right-container">
+
+            <h3>Wheather Info</h3>
+
+            <div id="wheather-data"></div>
+
+        </div>
+    </div>
+
+    <script>
+        "https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${API_KEY}&units=metric"
+
+        let API_KEY = "1a761d3bb408836cd1af3641ce1604c9";
+
+        let form = document.querySelector("form")
+        let city = document.getElementById("city")
+        let wheather = document.querySelector("#wheather-data")
+
+        async function fetchweather(city){
+
+            let response = await fetch(`https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${API_KEY}&units=metric`)
+
+           
+            let data = await response.json()
+           
+            let card = document.createElement("div")
+            card.innerHTML = `<h4>City : ${data.city}</h4>
+                              <h4>Temp : ${data.main.temp}</h4>
+                              <h4>Humidity : ${data.humidity}</h4>
+                              <h4>Wind: ${data.wind.speed}</h4>`
+                              
+            wheather.innerHTML = ""                  
+
+            
+            wheather.append(card)
+                
+        }
+
+            
+        form.addEventListener("submit",(event)=>{
+            event.preventDefault()
+            fetchweather(city.value)
+        })
+
+
+    </script>
+
+</body>
+
+</html>
